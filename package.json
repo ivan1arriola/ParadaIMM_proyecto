@@ -10,8 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "dotenv": "^17.4.2",
     "leaflet": "^1.9.4",
     "next": "latest",
+    "pg": "^8.20.0",
+    "prisma": "^7.8.0",
     "react": "latest",
     "react-dom": "latest",
     "react-leaflet": "^5.0.0"

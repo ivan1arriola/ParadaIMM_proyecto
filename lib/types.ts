@@ -28,6 +28,8 @@ export interface LineVariant {
 }
 
 export interface UpcomingBus {
+  busId?: number;
+  companyName?: string;
   lineVariantId: number;
   line: string;
   lineId: string;
@@ -35,6 +37,13 @@ export interface UpcomingBus {
   destination: string;
   subline: string;
   special: boolean;
+  eta?: number;
+  distance?: number;
+  position?: number;
+  access?: string;
+  thermalConfort?: string;
+  emissions?: string;
+  location?: GeoPoint;
 }
 
 export interface Bus {

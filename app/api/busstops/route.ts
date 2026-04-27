@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getBusStops } from "../../../lib/imm-api";
+import { getBusStops, refreshBusStopsCache } from "../../../lib/imm-api";
 
 export async function GET(request: NextRequest) {
   try {
-    const busStops = await getBusStops();
+    const refresh = request.nextUrl.searchParams.get("refresh");
+    const busStops = refresh === "1" ? await refreshBusStopsCache() : await getBusStops();
     const q = request.nextUrl.searchParams.get("q")?.trim().toLowerCase();
     const limit = Number(request.nextUrl.searchParams.get("limit") ?? 50);
 
@@ -18,7 +19,11 @@ export async function GET(request: NextRequest) {
         })
       : busStops;
 
-    return NextResponse.json(filtered.slice(0, Number.isFinite(limit) ? Math.max(1, limit) : 50));
+    const response = NextResponse.json(
+      filtered.slice(0, Number.isFinite(limit) ? Math.max(1, limit) : 50)
+    );
+    response.headers.set("x-busstops-cache", refresh === "1" ? "refresh" : "auto");
+    return response;
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error inesperado";
     return NextResponse.json({ error: message }, { status: 500 });
